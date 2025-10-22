@@ -1,6 +1,11 @@
 # 📊 Sales Analytics Dashboard
 
-![Dashboard Preview](https://via.placeholder.com/1200x600/667eea/ffffff?text=Sales+Analytics+Dashboard)
+![Dashboard Main](./screenshots/SalesAnalyticsDashBoard.png)
+
+<p align="center">
+  <img src="./screenshots/SalesAnalyticsDashBoard1.png" width="48%" />
+  <img src="./screenshots/SalesAnalyticsDashBoard2.png" width="48%" />
+</p>
 
 Un dashboard completo de análisis de ventas construido con React, FastAPI y PostgreSQL, containerizado con Docker.
 
