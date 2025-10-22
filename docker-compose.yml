@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  # Backend Service - FastAPI
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sales-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://salesuser:salespass@db:5432/salesdb
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./backend:/code
+    depends_on:
+      - db
+    networks:
+      - sales-network
+    restart: unless-stopped
+
+  # Frontend Service - React
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sales-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - sales-network
+    restart: unless-stopped
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+
+  # Database Service - PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: sales-db
+    environment:
+      - POSTGRES_USER=salesuser
+      - POSTGRES_PASSWORD=salespass
+      - POSTGRES_DB=salesdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - sales-network
+    restart: unless-stopped
+
+# Volúmenes para persistencia
+volumes:
+  postgres_data:
+    driver: local
+
+# Red personalizada
+networks:
+  sales-network:
+    driver: bridge
